@@ -12,8 +12,8 @@ use \Aspose\Imaging\Model\Requests\ConvertImageRequest;
 
 $config = new Configuration();
 $config->setBaseUrl($config->getBaseUrl());
-$config->setClientId("81e42949-3dc6-4080-b1d7-1c2c30cd954c");
-$config->setClientSecret("5cfcf33020020c094b481ea11e25da04");
+$config->setClientId("xxxxx");
+$config->setClientSecret("xxxxx");
 
 $api = new ImagingApi($config);
 
