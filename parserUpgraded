@@ -1,0 +1,35 @@
+<?php
+
+require_once __DIR__ . "/vendor/autoload.php";
+
+
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
+
+$configuration = Configuration::forSymmetricSigner(
+    // You may use any HMAC variations (256, 384, and 512)
+    new Sha256(),
+    // replace the value below with a key of your own!
+    InMemory::plainText('a2e5fc1e5105857b21741bb3bac0638c194fb0ee7f960a7ad5613d9bc81de5e072f516cfa183a3b6d12eac86bd7ca892989753aba4b86e81b3ab9a65ba1b9161')
+    // You may also override the JOSE encoder/decoder if needed by providing extra arguments here
+);
+
+$mtk="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhc3Bvc2UtY2xvdWQtYXBwLXNpZCI6Ijg3NTc3NUJDLThBNTItNDlCQS04QzY1LTdGNEJERkE2ODAyRSIsImFzcG9zZS1jbG91ZC1hcHAta2V5IjoiNjlmODY5ZTQ4MWJmZGUxOWU4MTczNWQxMmRkYzNkYjQiLCJpYXQiOjE2MzU2OTM2NjIsImV4cCI6MTYzNTY5NzI2MiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdC93c2N1YmV0ZWNoL3dwLWFkbWluL29wdGlvbnMtZ2VuZXJhbC5waHA_cGFnZT1Bc3Bvc2VQZGZJbXBvcnRlckFkbWluTWVudSIsImlzcyI6Imh0dHBzOi8vYWN0aXZhdG9yLm1hcmtldHBsYWNlLmFzcG9zZS5jbG91ZC8ifQ.d_q-ul9KNOEeyaSWZi5ZCRWLJDMZAuAaKAoJrT3cw7Q";
+$mtkn = $configuration->parser()->parse($mtk);
+
+$o1 = $configuration->signer();
+$o2 = $configuration->verificationKey();
+
+$configuration->setValidationConstraints(
+    new Lcobucci\JWT\Validation\Constraint\SignedWith($o1, $o2)
+);
+
+
+$constraints = $configuration->validationConstraints();
+
+$ret = $configuration->validator()->validate($mtkn,
+    ...$configuration->validationConstraints()
+);
+
+echo "shakeel";
